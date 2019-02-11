@@ -28,16 +28,16 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance, NaturalKey naturalKey)
             {
                 "Given a natural key that is a value object"
-                    .f(() => naturalKey = new NaturalKey("naturalKey"));
+                    .x(() => naturalKey = new NaturalKey("naturalKey"));
 
                 "When an instance of an aggregate root is created with that natural key"
-                    .f(() => instance = new Subject(naturalKey));
+                    .x(() => instance = new Subject(naturalKey));
 
                 "Then the natural key of that instance should be the original natural key"
-                    .f(() => instance.NaturalKey.Should().Be(naturalKey));
+                    .x(() => instance.NaturalKey.Should().Be(naturalKey));
 
                 "And the instance should contain a single uncommitted 'NewSubject' event with a natural key value matching the original natural key value"
-                    .f(() => instance.GetUncommittedEvents().Should().ContainSingle(
+                    .x(() => instance.GetUncommittedEvents().Should().ContainSingle(
                         @event => @event is NewSubject && ((NewSubject)@event).NaturalKeyValue == naturalKey.Value));
             }
 
@@ -96,19 +96,19 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance, Data data)
             {
                 "Given an instance of an aggregate root with an identifier"
-                    .f(() => instance = new Subject { Id = "subjectId" });
+                    .x(() => instance = new Subject { Id = "subjectId" });
 
                 "And some data that is a value object"
-                    .f(() => data = new Data("dataValue"));
+                    .x(() => data = new Data("dataValue"));
 
                 "When the instance processes that data"
-                    .f(() => instance.Process(data));
+                    .x(() => instance.Process(data));
 
                 "Then the processed data for the instance should be the original data"
-                    .f(() => instance.ProcessedData.Should().Be(data));
+                    .x(() => instance.ProcessedData.Should().Be(data));
 
                 "And the instance should contain a single uncommitted 'DataProcessed' event with a data value matching the original data value"
-                    .f(() => instance.GetUncommittedEvents().Should().ContainSingle(
+                    .x(() => instance.GetUncommittedEvents().Should().ContainSingle(
                         @event => @event is DataProcessed && ((DataProcessed)@event).DataValue == data.Value));
             }
 
@@ -167,13 +167,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(SubjectId subjectId, Action action)
             {
                 "Given a subject identifier"
-                    .f(() => subjectId = new SubjectId { Value = "subjectId" });
+                    .x(() => subjectId = new SubjectId { Value = "subjectId" });
 
                 "When a subject is created with that identifier"
-                    .f(() => action = () => new Subject(subjectId));
+                    .x(() => action = () => new Subject(subjectId));
 
                 "Then that actions should throw an exception"
-                    .f(() => action.ShouldThrow<RuntimeException>());
+                    .x(() => action.Should().Throw<RuntimeException>());
             }
 
             public class Subject : AggregateRoot
@@ -203,13 +203,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(SubjectId subjectId, Action action)
             {
                 "Given a subject identifier"
-                    .f(() => subjectId = new SubjectId { Value = "subjectId" });
+                    .x(() => subjectId = new SubjectId { Value = "subjectId" });
 
                 "When a subject is created with that identifier"
-                    .f(() => action = () => new Subject(subjectId));
+                    .x(() => action = () => new Subject(subjectId));
 
                 "Then that actions should throw an exception"
-                    .f(() => action.ShouldThrow<RuntimeException>());
+                    .x(() => action.Should().Throw<RuntimeException>());
             }
 
             public class Subject : AggregateRoot

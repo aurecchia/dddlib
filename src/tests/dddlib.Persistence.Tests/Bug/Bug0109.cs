@@ -35,7 +35,7 @@ namespace dddlib.Persistence.Tests.Bug
             Action action = () => repository.Save(sameSubject);
 
             // assert
-            action.ShouldThrow<ConcurrencyException>();
+            action.Should().Throw<ConcurrencyException>();
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace dddlib.Persistence.Tests.Bug
             Action action = () => repository.Save(sameSubject);
 
             // assert
-            action.ShouldThrow<ConcurrencyException>();
+            action.Should().Throw<ConcurrencyException>();
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace dddlib.Persistence.Tests.Bug
             Action action = () => repository.Save(sameSubject);
 
             // assert
-            action.ShouldThrow<ConcurrencyException>();
+            action.Should().Throw<ConcurrencyException>();
         }
 
         private class ConventionalSubject : AggregateRoot

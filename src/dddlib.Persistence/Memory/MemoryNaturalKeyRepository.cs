@@ -8,29 +8,28 @@ namespace dddlib.Persistence.Memory
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.IO;
     using System.IO.MemoryMappedFiles;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Security.AccessControl;
-    using System.Security.Principal;
     using System.Text;
     using System.Threading;
-    using System.Web.Script.Serialization;
-    using dddlib.Persistence.Sdk;
     using dddlib.Sdk;
+    using dddlib.Persistence.Sdk;
 
     /// <summary>
     /// Represents the memory natural key repository.
     /// </summary>
     public sealed class MemoryNaturalKeyRepository : INaturalKeyRepository, IDisposable
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         private readonly Dictionary<Type, List<MemoryMappedNaturalKey>> naturalKeysTypes = new Dictionary<Type, List<MemoryMappedNaturalKey>>();
         private readonly List<MemoryMappedNaturalKey> store = new List<MemoryMappedNaturalKey>();
 
         private readonly Mutex mutex;
         private readonly MemoryMappedFile file;
+        private readonly FileStream fileStream;
 
         private long currentCheckpoint;
         private long readOffset;
@@ -39,7 +38,7 @@ namespace dddlib.Persistence.Memory
 
         static MemoryNaturalKeyRepository()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>
@@ -47,16 +46,20 @@ namespace dddlib.Persistence.Memory
         /// </summary>
         public MemoryNaturalKeyRepository()
         {
-            var securitySettings = new MutexSecurity();
-            securitySettings.AddAccessRule(
-                new MutexAccessRule(
-                new SecurityIdentifier(WellKnownSidType.WorldSid, null),
-                MutexRights.FullControl,
-                AccessControlType.Allow));
-
-            var mutexCreated = false;
-            this.mutex = new Mutex(false, @"Global\MemoryNaturalKeyRepository3Mutex", out mutexCreated, securitySettings);
-            this.file = MemoryMappedFile.CreateOrOpen("MemoryNaturalKeyRepository3", 1 * 1024 * 1024 /* 1MB */);
+            this.mutex = new Mutex(false, @"Global\MemoryNaturalKeyRepository3Mutex");
+            var tempFileName = "MemoryNaturalKeyRepository3";
+            var bufferSize = 1 * 1024 * 1024 /* 1MB */;
+            this.fileStream = new FileStream(tempFileName,
+                                             FileMode.Create,  // Make sure that we always create a new file
+                                             FileAccess.ReadWrite,
+                                             FileShare.ReadWrite,
+                                             bufferSize);
+            this.file = MemoryMappedFile.CreateFromFile(this.fileStream,
+                                                        null,  // Named maps are only supported on Windows
+                                                        bufferSize,
+                                                        MemoryMappedFileAccess.ReadWrite,
+                                                        HandleInheritability.None,
+                                                        true);
         }
 
         /// <summary>
@@ -214,6 +217,14 @@ namespace dddlib.Persistence.Memory
 
             this.mutex.Dispose();
             this.file.Dispose();
+
+            // '.Name' actually gets the absolute path, as per the documentation
+            var tempFileToRemove = this.fileStream.Name;
+            this.fileStream.Dispose();
+            if (File.Exists(tempFileToRemove))
+            {
+                File.Delete(tempFileToRemove);
+            }
 
             this.isDisposed = true;
         }

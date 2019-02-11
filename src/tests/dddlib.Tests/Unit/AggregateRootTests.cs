@@ -87,7 +87,7 @@ namespace dddlib.Tests.Unit
             Action action = () => aggregate.ApplyEvent(@event);
 
             // assert
-            action.ShouldThrow<RuntimeException>();
+            action.Should().Throw<RuntimeException>();
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace dddlib.Tests.Unit
             Action action = () => aggregate.ApplyEvent(@event);
 
             // assert
-            action.ShouldThrow<RuntimeException>();
+            action.Should().Throw<RuntimeException>();
         }
 
         [Fact]
@@ -145,7 +145,7 @@ namespace dddlib.Tests.Unit
             Action action = () => aggregate.DoSomething();
 
             // assert
-            action.ShouldThrow<BusinessException>();
+            action.Should().Throw<BusinessException>();
         }
 
         [Fact]

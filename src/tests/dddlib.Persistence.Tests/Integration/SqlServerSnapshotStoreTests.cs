@@ -36,7 +36,7 @@ namespace dddlib.Persistence.Tests.Integration
 
             // assert
             actualSnapshot.Should().NotBeNull();
-            actualSnapshot.ShouldBeEquivalentTo(expectedSnapshot);
+            actualSnapshot.Should().BeEquivalentTo(expectedSnapshot);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace dddlib.Persistence.Tests.Integration
 
             // assert
             actualSnapshot.Should().NotBeNull();
-            actualSnapshot.ShouldBeEquivalentTo(secondSnapshot);
+            actualSnapshot.Should().BeEquivalentTo(secondSnapshot);
         }
 
         private class Memento

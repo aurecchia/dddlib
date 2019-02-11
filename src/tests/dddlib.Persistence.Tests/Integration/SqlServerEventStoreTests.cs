@@ -42,7 +42,7 @@ namespace dddlib.Persistence.Tests.Integration
             // assert
             actualEvents.Count().Should().Be(1);
             actualEvents.Single().Should().BeOfType<Event>();
-            actualEvents.Cast<Event>().Single().ShouldBeEquivalentTo(events[0]);
+            actualEvents.Cast<Event>().Single().Should().BeEquivalentTo(events[0]);
             actualCommitState.Should().Be(commitState);
         }
 
@@ -69,8 +69,8 @@ namespace dddlib.Persistence.Tests.Integration
             actualEvents.Count().Should().Be(2);
             actualEvents.First().Should().BeOfType<Event>();
             actualEvents.Last().Should().BeOfType<Event>();
-            actualEvents.Cast<Event>().First().ShouldBeEquivalentTo(events[0]);
-            actualEvents.Cast<Event>().Last().ShouldBeEquivalentTo(events[1]);
+            actualEvents.Cast<Event>().First().Should().BeEquivalentTo(events[0]);
+            actualEvents.Cast<Event>().Last().Should().BeEquivalentTo(events[1]);
             actualCommitState.Should().Be(commitState);
         }
 
@@ -96,8 +96,8 @@ namespace dddlib.Persistence.Tests.Integration
             actualEvents.Count().Should().Be(2);
             actualEvents.First().Should().BeOfType<Event>();
             actualEvents.Last().Should().BeOfType<Event>();
-            actualEvents.Cast<Event>().First().ShouldBeEquivalentTo(events1[0]);
-            actualEvents.Cast<Event>().Last().ShouldBeEquivalentTo(events2[0]);
+            actualEvents.Cast<Event>().First().Should().BeEquivalentTo(events1[0]);
+            actualEvents.Cast<Event>().Last().Should().BeEquivalentTo(events2[0]);
             actualCommitState.Should().Be(secondCommitState);
         }
 
@@ -125,11 +125,11 @@ namespace dddlib.Persistence.Tests.Integration
             // assert
             stream1Events.Count().Should().Be(1);
             stream1Events.Single().Should().BeOfType<Event>();
-            stream1Events.Cast<Event>().Single().ShouldBeEquivalentTo(events1[0]);
+            stream1Events.Cast<Event>().Single().Should().BeEquivalentTo(events1[0]);
             actualStream1CommitState.Should().Be(stream1CommitState);
             stream2Events.Count().Should().Be(1);
             stream2Events.Single().Should().BeOfType<Event>();
-            stream2Events.Cast<Event>().Single().ShouldBeEquivalentTo(events2[0]);
+            stream2Events.Cast<Event>().Single().Should().BeEquivalentTo(events2[0]);
             actualStream2CommitState.Should().Be(stream2CommitState);
         }
 
@@ -149,7 +149,7 @@ namespace dddlib.Persistence.Tests.Integration
             Action action = () => eventStore.CommitStream(streamId, events2, Guid.NewGuid(), null, out commitState);
 
             // assert
-            action.ShouldThrow<ConcurrencyException>();
+            action.Should().Throw<ConcurrencyException>();
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace dddlib.Persistence.Tests.Integration
                 Action action = () => eventStore.CommitStream(streamId, events, Guid.NewGuid(), null, out commitState);
 
                 // assert
-                action.ShouldThrow<ConcurrencyException>();
+                action.Should().Throw<ConcurrencyException>();
             }
         }
 

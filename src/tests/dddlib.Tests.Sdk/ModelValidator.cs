@@ -2,17 +2,19 @@
 //  Copyright (c) dddlib contributors. All rights reserved.
 // </copyright>
 
+
 namespace dddlib.Tests.Sdk
 {
     using System;
     using System.Linq;
-    using System.Web.Script.Serialization;
+    using dddlib.Sdk;
+    using dddlib.Sdk;
     using dddlib.TestFramework;
 
     public static class ModelValidator
     {
         private static readonly AggregateRootFactory Factory = new AggregateRootFactory();
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         public static void HasValidMemento<T>(T aggregate)
             where T : AggregateRoot

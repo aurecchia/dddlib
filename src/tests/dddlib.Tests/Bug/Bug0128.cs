@@ -17,7 +17,7 @@ namespace dddlib.Tests.Bug
         {
             Action action = () => new Subject("test");
 
-            action.ShouldThrow<RuntimeException>();
+            action.Should().Throw<RuntimeException>();
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace dddlib.Tests.Bug
         {
             Action action = () => new OtherSubject("test");
 
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]

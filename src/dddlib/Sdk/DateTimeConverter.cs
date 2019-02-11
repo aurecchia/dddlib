@@ -11,24 +11,23 @@ namespace dddlib.Projections.Sdk
 #endif
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Web.Script.Serialization;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Represents the <see cref="System.DateTime"/> converter for JavaScript serialization.
     /// </summary>
-    /// <seealso cref="System.Web.Script.Serialization.JavaScriptConverter" />
+    /// <seealso cref="JavaScriptConverter" />
     //// LINK (Cameron): http://blog.calyptus.eu/seb/2011/12/custom-datetime-json-serialization/
-    public class DateTimeConverter : JavaScriptConverter
+    public class DateTimeConverter : JsonConverter
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         /// <summary>
         /// Gets a collection of the supported types.
         /// </summary>
         /// <value>The supported types.</value>
-        public override IEnumerable<Type> SupportedTypes
+        public IEnumerable<Type> SupportedTypes
         {
             get { return new[] { typeof(DateTime) }; }
         }
@@ -38,9 +37,9 @@ namespace dddlib.Projections.Sdk
         /// </summary>
         /// <param name="dictionary">An <see cref="T:System.Collections.Generic.IDictionary`2" /> instance of property data stored as name/value pairs.</param>
         /// <param name="type">The type of the resulting object.</param>
-        /// <param name="serializer">The <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> instance.</param>
+        /// <param name="serializer">The <see cref="T:dddlib.Sdk.JavaScriptSerializer" /> instance.</param>
         /// <returns>The deserialized object.</returns>
-        public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
+        public object Deserialize(IDictionary<string, object> dictionary, Type type, IJsonSerializer serializer)
         {
             return Serializer.ConvertToType(dictionary, type);
         }
@@ -51,100 +50,27 @@ namespace dddlib.Projections.Sdk
         /// <param name="obj">The object to serialize.</param>
         /// <param name="serializer">The object that is responsible for the serialization.</param>
         /// <returns>An object that contains key/value pairs that represent the object’s data.</returns>
-        public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
+        public IDictionary<string, object> Serialize(object obj, IJsonSerializer serializer)
         {
-            return obj is DateTime
-                ? new DateTimeString((DateTime)obj)
-                : null;
+            return null;
+//            return obj is DateTime
+//                ? new DateTimeString((DateTime)obj)
+//                : null;
         }
 
-        private class DateTimeString : Uri, IDictionary<string, object>
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            public DateTimeString(DateTime value)
-              : base(value.ToUniversalTime().ToString("O"), UriKind.Relative)
-            {
-            }
+            throw new NotImplementedException();
+        }
 
-            ICollection<string> IDictionary<string, object>.Keys
-            {
-                get { throw new NotImplementedException(); }
-            }
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
 
-            ICollection<object> IDictionary<string, object>.Values
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            int ICollection<KeyValuePair<string, object>>.Count
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            bool ICollection<KeyValuePair<string, object>>.IsReadOnly
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            object IDictionary<string, object>.this[string key]
-            {
-                get { throw new NotImplementedException(); }
-                set { throw new NotImplementedException(); }
-            }
-
-            void IDictionary<string, object>.Add(string key, object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            bool IDictionary<string, object>.ContainsKey(string key)
-            {
-                throw new NotImplementedException();
-            }
-
-            bool IDictionary<string, object>.Remove(string key)
-            {
-                throw new NotImplementedException();
-            }
-
-            bool IDictionary<string, object>.TryGetValue(string key, out object value)
-            {
-                throw new NotImplementedException();
-            }
-
-            void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item)
-            {
-                throw new NotImplementedException();
-            }
-
-            void ICollection<KeyValuePair<string, object>>.Clear()
-            {
-                throw new NotImplementedException();
-            }
-
-            bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> item)
-            {
-                throw new NotImplementedException();
-            }
-
-            void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
-            {
-                throw new NotImplementedException();
-            }
-
-            bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item)
-            {
-                throw new NotImplementedException();
-            }
-
-            IEnumerator<KeyValuePair<string, object>> IEnumerable<KeyValuePair<string, object>>.GetEnumerator()
-            {
-                throw new NotImplementedException();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                throw new NotImplementedException();
-            }
+        public override bool CanConvert(Type objectType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

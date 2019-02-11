@@ -24,19 +24,19 @@ namespace dddlib.Tests.Feature
                 var subject = default(Subject);
 
                 "Given a subject"
-                    .f(() => subject = new Subject());
+                    .x(() => subject = new Subject());
 
                 "And the subject is updated"
-                    .f(() => subject.Update());
+                    .x(() => subject.Update());
 
                 "And the subject is destroyed"
-                    .f(() => subject.Destroy());
+                    .x(() => subject.Destroy());
 
                 "When the subject is updated again"
-                    .f(() => action = () => subject.Update());
+                    .x(() => action = () => subject.Update());
 
                 "Then that action should throw an exception"
-                    .f(() => action.ShouldThrow<dddlib.BusinessException>());
+                    .x(() => action.Should().Throw<dddlib.BusinessException>());
             }
 
             private class Subject : AggregateRoot
@@ -69,19 +69,19 @@ namespace dddlib.Tests.Feature
                 var subject = default(Subject);
 
                 "Given a subject"
-                    .f(() => subject = new Subject());
+                    .x(() => subject = new Subject());
 
                 "And the subject is updated"
-                    .f(() => subject.Update());
+                    .x(() => subject.Update());
 
                 "And the subject is destroyed"
-                    .f(() => subject.Destroy());
+                    .x(() => subject.Destroy());
 
                 "When the subject is updated again"
-                    .f(() => action = () => subject.Update());
+                    .x(() => action = () => subject.Update());
 
                 "Then that action should throw an exception"
-                    .f(() => action.ShouldThrow<dddlib.BusinessException>());
+                    .x(() => action.Should().Throw<dddlib.BusinessException>());
             }
 
             private class Subject : AggregateRoot

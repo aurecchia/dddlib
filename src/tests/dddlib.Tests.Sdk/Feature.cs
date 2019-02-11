@@ -26,7 +26,7 @@ namespace dddlib.Tests.Sdk
         public virtual void Background()
         {
             "Given a new application"
-                .f(context =>
+                .x(context =>
                 {
                     var typeAnalyzerService = new DefaultTypeAnalyzerService();
                     var bootstrapperProvider = new FeatureBootstrapperProvider();

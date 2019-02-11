@@ -31,16 +31,16 @@ namespace dddlib.Persistence.Tests.Feature
             base.Background();
 
             "Given an identity map"
-                .f(() => this.identityMap = new MemoryIdentityMap());
+                .x(() => this.identityMap = new MemoryIdentityMap());
 
             "And an event store"
-                .f(() => this.eventStore = new MemoryEventStore());
+                .x(() => this.eventStore = new MemoryEventStore());
 
             "And a snapshot store"
-                .f(() => this.snapshotStore = new MemorySnapshotStore());
+                .x(() => this.snapshotStore = new MemorySnapshotStore());
 
             "And an event store repository"
-                .f(() => this.repository = new EventStoreRepository(this.identityMap, this.eventStore, this.snapshotStore));
+                .x(() => this.repository = new EventStoreRepository(this.identityMap, this.eventStore, this.snapshotStore));
         }
 
         public class UndefinedNaturalKey : MemoryEventPersistence
@@ -49,13 +49,13 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject instance, Action action)
             {
                 "Given an instance of an aggregate root with no defined natural key"
-                    .f(() => instance = new Subject());
+                    .x(() => instance = new Subject());
 
                 "When that instance is saved to the repository"
-                    .f(() => action = () => this.repository.Save(instance));
+                    .x(() => action = () => this.repository.Save(instance));
 
                 "Then a persistence exception is thrown"
-                    .f(() => action.ShouldThrow<PersistenceException>());
+                    .x(() => action.Should().Throw<PersistenceException>());
             }
 
             public class Subject : AggregateRoot
@@ -77,13 +77,13 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject instance, Action action)
             {
                 "Given an instance of an aggregate root with no defined uninitialized factory"
-                    .f(() => instance = new Subject("nonsense"));
+                    .x(() => instance = new Subject("nonsense"));
 
                 "When that instance is saved to the repository"
-                    .f(() => action = () => this.repository.Save(instance));
+                    .x(() => action = () => this.repository.Save(instance));
 
                 "Then a persistence exception is thrown"
-                    .f(() => action.ShouldThrow<PersistenceException>());
+                    .x(() => action.Should().Throw<PersistenceException>());
             }
 
             public class Subject : AggregateRoot
@@ -103,13 +103,13 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject instance, Action action)
             {
                 "Given an instance of an aggregate root with a null natural key"
-                    .f(() => instance = new Subject());
+                    .x(() => instance = new Subject());
 
                 "When that instance is saved to the repository"
-                    .f(() => action = () => this.repository.Save(instance));
+                    .x(() => action = () => this.repository.Save(instance));
 
                 "Then a persistence exception is thrown"
-                    .f(() => action.ShouldThrow<ArgumentException>());
+                    .x(() => action.Should().Throw<ArgumentException>());
             }
 
             public class Subject : AggregateRoot
@@ -133,22 +133,22 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject saved, Subject loaded)
             {
                 "Given an instance of an aggregate root"
-                    .f(() => saved = new Subject("test"));
+                    .x(() => saved = new Subject("test"));
 
                 "And that instance is saved to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "When that instance is loaded from the repository"
-                    .f(() => loaded = this.repository.Load<Subject>(saved.Id));
+                    .x(() => loaded = this.repository.Load<Subject>(saved.Id));
 
                 "Then the loaded instance should be the saved instance"
-                    .f(() => loaded.Should().Be(saved));
+                    .x(() => loaded.Should().Be(saved));
 
                 "And their revisions should be equal"
-                    .f(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
+                    .x(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
 
                 "And their mementos should match"
-                    .f(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
+                    .x(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
             }
 
             public class Subject : AggregateRoot
@@ -201,28 +201,28 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject saved, Subject loaded)
             {
                 "Given an instance of an aggregate root"
-                    .f(() => saved = new Subject("test2"));
+                    .x(() => saved = new Subject("test2"));
 
                 "And that instance is saved to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "And something happened to that instance"
-                    .f(() => saved.DoSomething());
+                    .x(() => saved.DoSomething());
 
                 "And that instance is saved again to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "When that instance is loaded from the repository"
-                    .f(() => loaded = this.repository.Load<Subject>(saved.Id));
+                    .x(() => loaded = this.repository.Load<Subject>(saved.Id));
 
                 "Then the loaded instance should be the saved instance"
-                    .f(() => loaded.Should().Be(saved));
+                    .x(() => loaded.Should().Be(saved));
 
                 "And their revisions should be equal"
-                    .f(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
+                    .x(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
 
                 "And their mementos should match"
-                    .f(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
+                    .x(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
             }
 
             public class Subject : AggregateRoot
@@ -306,31 +306,31 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject saved, Subject loaded, Subject anotherLoaded)
             {
                 "Given an instance of an aggregate root"
-                    .f(() => saved = new Subject("test3"));
+                    .x(() => saved = new Subject("test3"));
 
                 "And that instance is saved to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "And that instance is loaded from the repository"
-                    .f(() => loaded = this.repository.Load<Subject>(saved.Id));
+                    .x(() => loaded = this.repository.Load<Subject>(saved.Id));
 
                 "And something happened to that loaded instance"
-                    .f(() => loaded.DoSomething());
+                    .x(() => loaded.DoSomething());
 
                 "And that loaded instance is saved to the repository"
-                    .f(() => this.repository.Save(loaded));
+                    .x(() => this.repository.Save(loaded));
 
                 "When another instance is loaded from the repository"
-                    .f(() => anotherLoaded = this.repository.Load<Subject>(saved.Id));
+                    .x(() => anotherLoaded = this.repository.Load<Subject>(saved.Id));
 
                 "Then the other loaded instance should be the loaded instance"
-                    .f(() => anotherLoaded.Should().Be(loaded));
+                    .x(() => anotherLoaded.Should().Be(loaded));
 
                 "And their revisions should be equal"
-                    .f(() => anotherLoaded.GetRevision().Should().Be(loaded.GetRevision()));
+                    .x(() => anotherLoaded.GetRevision().Should().Be(loaded.GetRevision()));
 
                 "And their mementos should match"
-                    .f(() => anotherLoaded.GetMemento().ShouldMatch(loaded.GetMemento()));
+                    .x(() => anotherLoaded.GetMemento().ShouldMatch(loaded.GetMemento()));
             }
 
             public class Subject : AggregateRoot
@@ -414,13 +414,13 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject saved, Subject loaded)
             {
                 "Given an instance of an aggregate root"
-                    .f(() => saved = new Subject("test4"));
+                    .x(() => saved = new Subject("test4"));
 
                 "And that instance is saved to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "And that instance is snapshot to the repository"
-                    .f(() =>
+                    .x(() =>
                     {
                         Guid streamId;
                         this.identityMap.TryGet(typeof(Subject), typeof(string), saved.Id, out streamId);
@@ -434,16 +434,16 @@ namespace dddlib.Persistence.Tests.Feature
                     });
 
                 "When that instance is loaded from the repository"
-                    .f(() => loaded = this.repository.Load<Subject>(saved.Id));
+                    .x(() => loaded = this.repository.Load<Subject>(saved.Id));
 
                 "Then the loaded instance should be the saved instance"
-                    .f(() => loaded.Should().Be(saved));
+                    .x(() => loaded.Should().Be(saved));
 
                 "And their revisions should be equal"
-                    .f(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
+                    .x(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
 
                 "And their mementos should match"
-                    .f(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
+                    .x(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
             }
 
             public class Subject : AggregateRoot
@@ -496,13 +496,13 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(Subject saved, Subject loaded, IEnumerable<object> events)
             {
                 "Given an instance of an aggregate root"
-                    .f(() => saved = new Subject("test5"));
+                    .x(() => saved = new Subject("test5"));
 
                 "And that instance is saved to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "And that instance is snapshot to the repository"
-                    .f(() =>
+                    .x(() =>
                     {
                         Guid streamId;
                         this.identityMap.TryGet(typeof(Subject), typeof(string), saved.Id, out streamId);
@@ -516,16 +516,16 @@ namespace dddlib.Persistence.Tests.Feature
                     });
 
                 "And something happened to that instance"
-                    .f(() => saved.DoSomething());
+                    .x(() => saved.DoSomething());
 
                 "And that instance is saved again to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "When that instance is loaded from the repository"
-                    .f(() => loaded = this.repository.Load<Subject>(saved.Id));
+                    .x(() => loaded = this.repository.Load<Subject>(saved.Id));
 
                 "And the events for that instance are loaded from the event store"
-                    .f(() => 
+                    .x(() =>
                     {
                         Guid streamId;
                         this.identityMap.TryGet(typeof(Subject), typeof(string), saved.Id, out streamId);
@@ -535,19 +535,19 @@ namespace dddlib.Persistence.Tests.Feature
                     });
 
                 "Then the loaded instance should be the saved instance"
-                    .f(() => loaded.Should().Be(saved));
+                    .x(() => loaded.Should().Be(saved));
 
                 "And their revisions should be equal"
-                    .f(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
+                    .x(() => loaded.GetRevision().Should().Be(saved.GetRevision()));
 
                 "And their mementos should match"
-                    .f(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
+                    .x(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
 
                 "And their mementos should match"
-                    .f(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
+                    .x(() => loaded.GetMemento().ShouldMatch(saved.GetMemento()));
 
                 "And the loaded events should contain two matching events"
-                    .f(() =>
+                    .x(() =>
                     {
                         events.Should().HaveCount(2);
                         events.First().Should().BeOfType<NewSubject>();
@@ -638,41 +638,41 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(string naturalKey, Subject saved, Subject loaded, Subject temporallyNew, Subject actual, Action action)
             {
                 "Given a natural key value"
-                    .f(() => naturalKey = "naturalKey");
+                    .x(() => naturalKey = "naturalKey");
 
                 "And an instance of an aggregate root with that natural key"
-                    .f(() => saved = new Subject(naturalKey));
+                    .x(() => saved = new Subject(naturalKey));
 
                 "And that instance is saved to the repository"
-                    .f(() => this.repository.Save(saved));
+                    .x(() => this.repository.Save(saved));
 
                 "And that instance is loaded from the repository"
-                    .f(() => loaded = this.repository.Load<Subject>(naturalKey));
+                    .x(() => loaded = this.repository.Load<Subject>(naturalKey));
 
                 "And that instance is destroyed"
-                    .f(() => loaded.Destroy());
+                    .x(() => loaded.Destroy());
 
                 "And no further operations can occur against that instance"
-                    .f(() => ((Action)(() => loaded.Destroy())).ShouldThrow<BusinessException>());
+                    .x(() => ((Action)(() => loaded.Destroy())).Should().Throw<BusinessException>());
 
                 "And that destroyed instance is saved to the repository"
-                    .f(() => this.repository.Save(loaded));
+                    .x(() => this.repository.Save(loaded));
 
                 "When a temporally new instance of an aggregate root with that same natural key is created"
-                    .f(() => temporallyNew = new Subject(naturalKey));
+                    .x(() => temporallyNew = new Subject(naturalKey));
 
                 "And that temporally new instance is saved to the repository"
-                    .f(() => action = () => this.repository.Save(temporallyNew));
+                    .x(() => action = () => this.repository.Save(temporallyNew));
 
                 "Then the operation completes without an exception being thrown"
-                    .f(() => action.ShouldNotThrow());
+                    .x(() => action.Should().NotThrow());
 
                 "And further operations can occur against that instance"
-                    .f(() =>
+                    .x(() =>
                     {
                         actual = this.repository.Load<Subject>(naturalKey);
                         action = () => actual.Destroy();
-                        action.ShouldNotThrow();
+                        action.Should().NotThrow();
                     });
             }
 

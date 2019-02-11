@@ -35,7 +35,7 @@ namespace dddlib.Persistence.Tests.Bug
             Action action = () => repository.Load<OtherSubject>(otherSubject.NaturalKey);
 
             // assert
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         private class Subject : AggregateRoot

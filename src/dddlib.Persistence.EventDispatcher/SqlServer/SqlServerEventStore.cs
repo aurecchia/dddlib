@@ -13,8 +13,9 @@ namespace dddlib.Persistence.EventDispatcher.SqlServer
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Transactions;
-    using System.Web.Script.Serialization;
+    using dddlib.Sdk;
     using dddlib.Persistence.EventDispatcher.Sdk;
+    using dddlib.Sdk;
 
     /// <summary>
     /// Represents the SQL Server event store (for the event dispatcher).
@@ -22,14 +23,14 @@ namespace dddlib.Persistence.EventDispatcher.SqlServer
     public class SqlServerEventStore : IEventStore
     {
         // NOTE (Cameron): This is nonsense and should be moved out of here.
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         private readonly string connectionString;
         private readonly string schema;
 
         static SqlServerEventStore()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

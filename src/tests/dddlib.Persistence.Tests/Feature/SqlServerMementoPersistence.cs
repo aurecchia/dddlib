@@ -58,7 +58,7 @@ namespace dddlib.Persistence.Tests.Feature
             public void Scenario(IRepository<Subject> repository, Subject instance, Subject otherInstance, string naturalKey)
             {
                 "Given a SQL database"
-                    .f(() => this.ExecuteSql(@"CREATE TABLE [dbo].[Subjects]
+                    .x(() => this.ExecuteSql(@"CREATE TABLE [dbo].[Subjects]
 (
     [Id] [uniqueidentifier] NOT NULL,
     [NaturalKey] [varchar](MAX) NOT NULL,
@@ -67,22 +67,22 @@ namespace dddlib.Persistence.Tests.Feature
 );"));
 
                 "And a repository"
-                    .f(() => repository = new SubjectRepository(this.ConnectionString));
+                    .x(() => repository = new SubjectRepository(this.ConnectionString));
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "And an instance of an entity with that natural key"
-                    .f(() => instance = new Subject(naturalKey));
+                    .x(() => instance = new Subject(naturalKey));
 
                 "When that instance is saved to the repository"
-                    .f(() => repository.Save(instance));
+                    .x(() => repository.Save(instance));
 
                 "And an other instance is loaded from the repository"
-                    .f(() => otherInstance = repository.Load(instance.NaturalKey));
+                    .x(() => otherInstance = repository.Load(instance.NaturalKey));
 
                 "Then that instance should be the other instance"
-                    .f(() => instance.Should().Be(otherInstance));
+                    .x(() => instance.Should().Be(otherInstance));
             }
 
             public class Subject : AggregateRoot

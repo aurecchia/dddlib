@@ -30,13 +30,13 @@ namespace dddlib.Tests.Feature
                 var aggregateRoot = default(Subject);
 
                 "Given a natural key"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When an aggregate root is instantiated with that natural key"
-                    .f(() => aggregateRoot = new Subject(naturalKey));
+                    .x(() => aggregateRoot = new Subject(naturalKey));
 
                 "Then an event is raised with that natural key"
-                    .f(() => aggregateRoot.GetUncommittedEvents().Should().ContainSingle(@event => @event.As<NewSubject>().NaturalKey == naturalKey));
+                    .x(() => aggregateRoot.GetUncommittedEvents().Should().ContainSingle(@event => @event.As<NewSubject>().NaturalKey == naturalKey));
             }
 
             public class Subject : AggregateRoot
@@ -80,19 +80,19 @@ namespace dddlib.Tests.Feature
             public void Scenario(IRegistrationService registrationService, Registration registration, Van van)
             {
                 "Given a registration service"
-                    .f(() => registrationService = new RegistrationService());
+                    .x(() => registrationService = new RegistrationService());
 
                 "And a registration"
-                    .f(() => registration = new Registration("abc", registrationService));
+                    .x(() => registration = new Registration("abc", registrationService));
 
                 "When a van is instantiated with that registration"
-                    .f(() => van = new Van(registration));
+                    .x(() => van = new Van(registration));
 
                 "Then an event is raised for the new vehicle"
-                    .f(() => van.GetUncommittedEvents().Should().Contain(@event => @event.As<NewVehicle>().RegistrationNumber == registration.Number));
+                    .x(() => van.GetUncommittedEvents().Should().Contain(@event => @event.As<NewVehicle>().RegistrationNumber == registration.Number));
 
                 "And an event is raised for the new van"
-                    .f(() => van.GetUncommittedEvents().Should().Contain(@event => (@event.As<NewVan>() ?? new NewVan()).RegistrationNumber == registration.Number));
+                    .x(() => van.GetUncommittedEvents().Should().Contain(@event => (@event.As<NewVan>() ?? new NewVan()).RegistrationNumber == registration.Number));
             }
 
             public class Van : Vehicle
@@ -137,19 +137,19 @@ namespace dddlib.Tests.Feature
             public void Scenario(IRegistrationService registrationService, Registration registration, Van van)
             {
                 "Given a registration service"
-                    .f(() => registrationService = new RegistrationService());
+                    .x(() => registrationService = new RegistrationService());
 
                 "And a registration"
-                    .f(() => registration = new Registration("abc", registrationService));
+                    .x(() => registration = new Registration("abc", registrationService));
 
                 "When a van is instantiated with that registration"
-                    .f(() => van = new Van(registration));
+                    .x(() => van = new Van(registration));
 
                 "Then an event is raised for the new vehicle"
-                    .f(() => van.GetUncommittedEvents().Should().Contain(@event => @event.As<NewVehicle>().RegistrationNumber == registration.Number));
+                    .x(() => van.GetUncommittedEvents().Should().Contain(@event => @event.As<NewVehicle>().RegistrationNumber == registration.Number));
 
                 "And an event is raised for the new van"
-                    .f(() => van.GetUncommittedEvents().Should().Contain(@event => (@event.As<NewVan>() ?? new NewVan()).RegistrationNumber == registration.Number));
+                    .x(() => van.GetUncommittedEvents().Should().Contain(@event => (@event.As<NewVan>() ?? new NewVan()).RegistrationNumber == registration.Number));
             }
 
             public class Van : Vehicle

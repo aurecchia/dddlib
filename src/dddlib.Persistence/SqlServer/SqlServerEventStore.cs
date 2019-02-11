@@ -14,7 +14,6 @@ namespace dddlib.Persistence.SqlServer
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Transactions;
-    using System.Web.Script.Serialization;
     using dddlib.Persistence.Sdk;
     using dddlib.Sdk;
     using Microsoft.SqlServer.Server;
@@ -26,7 +25,7 @@ namespace dddlib.Persistence.SqlServer
     public class SqlServerEventStore : IEventStore
     {
         // NOTE (Cameron): This is nonsense and should be moved out of here.
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         // PERF (Cameron): Introduced to reduce memory allocations.
         private static readonly string Hostname = Environment.MachineName;
@@ -40,7 +39,7 @@ namespace dddlib.Persistence.SqlServer
 
         static SqlServerEventStore()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>
@@ -228,7 +227,7 @@ Further information: https://github.com/dddlib/dddlib/wiki/Serialization",
         private class SqlEvents : IEnumerable<SqlDataRecord>
         {
             // NOTE (Cameron): This is nonsense and should be moved out of here.
-            private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+            private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
             private static readonly SqlMetaData[] ColumnMetadata = new[]
             {
@@ -243,7 +242,7 @@ Further information: https://github.com/dddlib/dddlib/wiki/Serialization",
 
             static SqlEvents()
             {
-                Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//                Serializer.RegisterConverters(new[] { new DateTimeConverter() });
             }
 
             public SqlEvents(ITypeCache typeCache, IEnumerable<object> events)

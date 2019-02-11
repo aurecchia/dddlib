@@ -2,6 +2,7 @@
 //  Copyright (c) dddlib contributors. All rights reserved.
 // </copyright>
 
+
 namespace dddlib.Projections.SqlServer
 {
     using System;
@@ -13,7 +14,8 @@ namespace dddlib.Projections.SqlServer
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Transactions;
-    using System.Web.Script.Serialization;
+    using dddlib.Sdk;
+    using dddlib.Sdk;
     using Sdk;
 
     /// <summary>
@@ -22,7 +24,7 @@ namespace dddlib.Projections.SqlServer
     public class SqlServerEventStore : IEventStore
     {
         // NOTE (Cameron): This is nonsense and should be moved out of here.
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         private readonly string connectionString;
         private readonly string schema;
@@ -30,7 +32,7 @@ namespace dddlib.Projections.SqlServer
 
         static SqlServerEventStore()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

@@ -25,16 +25,16 @@ namespace dddlib.Persistence.EventDispatcher.Tests.Feature
             base.Background();
 
             "Given an identity map"
-                .f(() => this.identityMap = new MemoryIdentityMap());
+                .x(() => this.identityMap = new MemoryIdentityMap());
 
             "And an event store"
-                .f(() => this.eventStore = new MemoryEventStore());
+                .x(() => this.eventStore = new MemoryEventStore());
 
             "And a snapshot store"
-                .f(() => this.snapshotStore = new MemorySnapshotStore());
+                .x(() => this.snapshotStore = new MemorySnapshotStore());
 
             "And an event store repository"
-                .f(() => this.repository = new EventStoreRepository(this.identityMap, this.eventStore, this.snapshotStore));
+                .x(() => this.repository = new EventStoreRepository(this.identityMap, this.eventStore, this.snapshotStore));
         }
 
         public class CanDispatch : MemoryEventDispatcher
@@ -47,7 +47,7 @@ namespace dddlib.Persistence.EventDispatcher.Tests.Feature
                 AutoResetEvent notify)
             {
                 "Given a memory event dispatcher"
-                    .f(c =>
+                    .x(c =>
                     {
                         notify = new AutoResetEvent(false);
                         eventDispatcher = new Memory.MemoryEventDispatcher(
@@ -59,16 +59,16 @@ namespace dddlib.Persistence.EventDispatcher.Tests.Feature
                     });
 
                 "And an instance of an aggregate root"
-                    .f(() => instance = new Subject("key"));
+                    .x(() => instance = new Subject("key"));
 
                 "When that instance is saved to the repository"
-                    .f(() => this.repository.Save(instance));
+                    .x(() => this.repository.Save(instance));
 
                 "And a short period of time elapses"
-                    .f(() => notify.WaitOne(10 * 1000) /* up to 10 secs */);
+                    .x(() => notify.WaitOne(10 * 1000) /* up to 10 secs */);
 
                 "Then the event is dispatched"
-                    .f(() =>
+                    .x(() =>
                     {
                         newSubject.Should().NotBeNull();
                         newSubject.Id.Should().Be(instance.Id);

@@ -28,20 +28,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string value)
             {
                 "Given a value object with an undefined equality comparer"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a value"
-                    .f(() => value = "key");
+                    .x(() => value = "key");
 
                 "When two instances of that value object that are instantiated with the same value"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { Value = value };
                         instance2 = new Subject { Value = value };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : ValueObject<Subject>
@@ -56,17 +56,17 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2)
             {
                 "Given a value object with an equality comparer defined in the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "When two instances of that value object that are instantiated with the 'same' value"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { Value = "a" };
                         instance2 = new Subject { Value = "b" };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : ValueObject<Subject>
@@ -102,17 +102,17 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string value)
             {
                 "Given a value object with an undefined equality comparer"
-                    .f(() => { });
+                    .x(() => { });
 
                 "When two instances of that value object that are instantiated with different values"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { Value = "CASE" };
                         instance2 = new Subject { Value = "case" };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().NotBe(instance2));
+                    .x(() => instance1.Should().NotBe(instance2));
             }
 
             public class Subject : ValueObject<Subject>
@@ -127,17 +127,17 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2)
             {
                 "Given a value object with an equality comparer defined in the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "When two instances of that value object that are instantiated with the 'same' value"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { Value = "CASE" };
                         instance2 = new Subject { Value = "case" };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : ValueObject<Subject>

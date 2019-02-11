@@ -23,26 +23,26 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance, Subject otherInstance, string serializedSubject)
             {
                 "Given a value object with a serializer defined in the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And an instance of that value object"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance = new Subject { Value = "value" };
                     });
 
                 "And that instance is serialized and deserialized"
-                    .f(() =>
+                    .x(() =>
                     {
                         serializedSubject = Application.Current.GetValueObjectType(typeof(Subject)).Serializer.Serialize(instance);
                         otherInstance = (Subject)Application.Current.GetValueObjectType(typeof(Subject)).Serializer.Deserialize(serializedSubject);
                     });
 
                 "Then the first instance is equal to the other instance"
-                    .f(() => instance.Should().Be(otherInstance));
+                    .x(() => instance.Should().Be(otherInstance));
 
                 "And "
-                    .f(() => serializedSubject.Substring(0, 2).Should().Be("V:"));
+                    .x(() => serializedSubject.Substring(0, 2).Should().Be("V:"));
             }
 
             public class Subject : ValueObject<Subject>
@@ -79,26 +79,26 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance, Subject otherInstance, string serializedSubject)
             {
                 "Given a value object with a serializer defined in the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And an instance of that value object"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance = new Subject { Value = "value" };
                     });
 
                 "And that instance is serialized and deserialized"
-                    .f(() =>
+                    .x(() =>
                     {
                         serializedSubject = Application.Current.GetValueObjectType(typeof(Subject)).Serializer.Serialize(instance);
                         otherInstance = (Subject)Application.Current.GetValueObjectType(typeof(Subject)).Serializer.Deserialize(serializedSubject);
                     });
 
                 "Then the first instance is equal to the other instance"
-                    .f(() => instance.Should().Be(otherInstance));
+                    .x(() => instance.Should().Be(otherInstance));
 
                 "And "
-                    .f(() => serializedSubject.Substring(0, 2).Should().Be("X:"));
+                    .x(() => serializedSubject.Substring(0, 2).Should().Be("X:"));
             }
 
             public class Subject : ValueObject<Subject>

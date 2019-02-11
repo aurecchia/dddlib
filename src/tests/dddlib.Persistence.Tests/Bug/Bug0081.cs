@@ -25,7 +25,7 @@ namespace dddlib.Persistence.Tests.Bug
             Action action = () => repository.Load<Subject>(naturalKey);
 
             // assert
-            action.ShouldThrow<AggregateRootNotFoundException>();
+            action.Should().Throw<AggregateRootNotFoundException>();
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace dddlib.Persistence.Tests.Bug
             Action action = () => repository.Load(naturalKey);
 
             // assert
-            action.ShouldThrow<AggregateRootNotFoundException>();
+            action.Should().Throw<AggregateRootNotFoundException>();
         }
 
         private class Subject : AggregateRoot

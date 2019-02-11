@@ -4,11 +4,12 @@
 
 namespace dddlib.Tests.Sdk
 {
-    using System.Web.Script.Serialization;
+    using dddlib.Sdk;
+    using dddlib.Sdk;
 
     public static class AssertionExtensions
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         public static void ShouldMatch(this object actualValue, object expectedValue)
         {

@@ -2,21 +2,22 @@
 //  Copyright (c) dddlib contributors. All rights reserved.
 // </copyright>
 
+using System.CodeDom;
+using System.IO;
+
 namespace dddlib.Persistence.EventDispatcher.Memory
 {
     using System;
     using System.IO.MemoryMappedFiles;
-    using System.Security.AccessControl;
-    using System.Security.Principal;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Web.Script.Serialization;
+    using dddlib.Sdk;
     using dddlib.Persistence.EventDispatcher.Sdk;
 
     internal sealed class MemoryNotificationService : INotificationService, IDisposable
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         private readonly ManualResetEvent resetEvent = new ManualResetEvent(false);
 
@@ -38,24 +39,19 @@ namespace dddlib.Persistence.EventDispatcher.Memory
         // LINK (Cameron): http://weblogs.asp.net/ricardoperes/local-machine-interprocess-communication-with-net
         private void GetData()
         {
-            var securitySettings = new EventWaitHandleSecurity();
-            securitySettings.AddAccessRule(
-                new EventWaitHandleAccessRule(
-                new SecurityIdentifier(WellKnownSidType.WorldSid, null),
-                EventWaitHandleRights.FullControl,
-                AccessControlType.Allow));
+            // NOTE (Alessio): This path needs to be the same that we use in `dddlib.Persistence.Memory.MemoryEventStore`
+            var tempFileName = Path.Combine(Path.GetTempPath(), "MemoryEventStore2");
+            const int bufferSize = 10 * 1024 * 1024;
 
-            var offset = 0L;
+            // TODO (Alessio): Not sure if we can create multiple memory mapped files from the same physical file on
+            //                 disk. If an existing file cannot be used with the `MemoryMappedFile.CreateFromFile()`
+            //                 method, then we need to implement IPC differently
+            using (var fileStream = new FileStream(tempFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, bufferSize))
+            using (var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
+            using (var file = MemoryMappedFile.CreateFromFile(fileStream, null, bufferSize, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, true))
+            {
+                var offset = 0L;
 
-            var waitHandleCreated = false;
-            using (var waitHandle = new EventWaitHandle(
-                false,
-                EventResetMode.AutoReset,
-                "MemoryNotificationService2",
-                out waitHandleCreated,
-                securitySettings))
-            using (var file = MemoryMappedFile.CreateOrOpen("MemoryEventStore2", 10 * 1024 * 1024 /* 10MB */))
-            { 
                 while (WaitHandle.WaitAny(new WaitHandle[] { this.resetEvent, waitHandle }) == 1)
                 {
                     var sequenceNumber = 0L;
@@ -98,6 +94,11 @@ namespace dddlib.Persistence.EventDispatcher.Memory
                         this.OnBatchPrepared.Invoke(this, new BatchPreparedEventArgs(batchId));
                     }
                 }
+            }
+
+            if (File.Exists(tempFileName))
+            {
+                File.Delete(tempFileName);
             }
         }
 

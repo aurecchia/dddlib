@@ -12,7 +12,6 @@ namespace dddlib.Persistence.SqlServer
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Transactions;
-    using System.Web.Script.Serialization;
     using dddlib.Persistence.Sdk;
     using dddlib.Sdk;
 
@@ -24,7 +23,7 @@ namespace dddlib.Persistence.SqlServer
     public sealed class SqlServerMementoRepository<T> : Repository<T> where T : AggregateRoot
     {
         // NOTE (Cameron): This is nonsense and should be moved out of here.
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         private readonly string loadMementoStoredProcName;
         private readonly string saveMementoStoredProcName;
@@ -35,7 +34,7 @@ namespace dddlib.Persistence.SqlServer
 
         static SqlServerMementoRepository()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

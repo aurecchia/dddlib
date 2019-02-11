@@ -5,7 +5,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle("dddlib.Projections")]
+//[assembly: AssemblyTitle("dddlib.Projections")]
 [assembly: AssemblyDescription("")]
 
 [assembly: CLSCompliant(true)]

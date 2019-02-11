@@ -21,7 +21,7 @@ namespace dddlib.Tests.Bug
             Action action = () => subject.EndLifecycle();
 
             // assert
-            action.ShouldThrow<BusinessException>();
+            action.Should().Throw<BusinessException>();
         }
 
         public class Subject : AggregateRoot

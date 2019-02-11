@@ -23,16 +23,16 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance, Thing thing)
             {
                 "Given a some thing that is an entity"
-                    .f(() => thing = new Thing("naturalKey"));
+                    .x(() => thing = new Thing("naturalKey"));
 
                 "When an instance of an aggregate root is created with that thing"
-                    .f(() => instance = new Subject(thing));
+                    .x(() => instance = new Subject(thing));
 
                 "Then the thing of that instance should be the original thing"
-                    .f(() => instance.Thing.Should().Be(thing));
+                    .x(() => instance.Thing.Should().Be(thing));
 
                 "And the instance should contain a single uncommitted 'NewSubject' event with a thing value matching the original thing value"
-                    .f(() => instance.GetUncommittedEvents().Should().ContainSingle(
+                    .x(() => instance.GetUncommittedEvents().Should().ContainSingle(
                         @event => @event is NewSubject && ((NewSubject)@event).ThingValue == thing.Value));
             }
 
@@ -92,19 +92,19 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance, Data data)
             {
                 "Given an instance of an aggregate root with an identifier"
-                    .f(() => instance = new Subject { Id = "subjectId" });
+                    .x(() => instance = new Subject { Id = "subjectId" });
 
                 "And some data that is an entity"
-                    .f(() => data = new Data("dataValue"));
+                    .x(() => data = new Data("dataValue"));
 
                 "When the instance processes that data"
-                    .f(() => instance.Process(data));
+                    .x(() => instance.Process(data));
 
                 "Then the processed data for the instance should be the original data"
-                    .f(() => instance.ProcessedData.Should().Be(data));
+                    .x(() => instance.ProcessedData.Should().Be(data));
 
                 "And the instance should contain a single uncommitted 'DataProcessed' event with a data value matching the original data value"
-                    .f(() => instance.GetUncommittedEvents().Should().ContainSingle(
+                    .x(() => instance.GetUncommittedEvents().Should().ContainSingle(
                         @event => @event is DataProcessed && ((DataProcessed)@event).DataValue == data.Value));
             }
 
@@ -164,13 +164,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(SomeThing subjectId, Action action)
             {
                 "Given a subject identifier"
-                    .f(() => subjectId = new SomeThing { Value = "subjectId" });
+                    .x(() => subjectId = new SomeThing { Value = "subjectId" });
 
                 "When a subject is created with that identifier"
-                    .f(() => action = () => new Subject(subjectId));
+                    .x(() => action = () => new Subject(subjectId));
 
                 "Then that actions should throw an exception"
-                    .f(() => action.ShouldThrow<RuntimeException>());
+                    .x(() => action.Should().Throw<RuntimeException>());
             }
 
             public class Subject : AggregateRoot
@@ -200,13 +200,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(SomeThing subjectId, Action action)
             {
                 "Given a subject identifier"
-                    .f(() => subjectId = new SomeThing { Value = "subjectId" });
+                    .x(() => subjectId = new SomeThing { Value = "subjectId" });
 
                 "When a subject is created with that identifier"
-                    .f(() => action = () => new Subject(subjectId));
+                    .x(() => action = () => new Subject(subjectId));
 
                 "Then that actions should throw an exception"
-                    .f(() => action.ShouldThrow<RuntimeException>());
+                    .x(() => action.Should().Throw<RuntimeException>());
             }
 
             public class Subject : AggregateRoot

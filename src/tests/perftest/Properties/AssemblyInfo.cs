@@ -5,7 +5,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle("perftest")]
+//[assembly: AssemblyTitle("perftest")]
 [assembly: AssemblyDescription("")]
 
 [assembly: CLSCompliant(true)]

@@ -26,13 +26,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject subject, Action action)
             {
                 "Given an aggregate root with a valid memento implementation"
-                    .f(() => subject = new Subject { Name = "name", Value = "value" });
+                    .x(() => subject = new Subject { Name = "name", Value = "value" });
 
                 "When using the model assertions to validate the memento"
-                    .f(() => action = () => ModelValidator.HasValidMemento(subject));
+                    .x(() => action = () => ModelValidator.HasValidMemento(subject));
 
                 "Then the action should not throw"
-                    .f(() => action.ShouldNotThrow());
+                    .x(() => action.Should().NotThrow());
             }
 
             public class Subject : AggregateRoot
@@ -81,13 +81,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject subject, Action action)
             {
                 "Given an aggregate root with a valid memento implementation"
-                    .f(() => subject = new Subject { Name = "name", Value = "value" });
+                    .x(() => subject = new Subject { Name = "name", Value = "value" });
 
                 "When using the model assertions to validate the memento"
-                    .f(() => action = () => ModelValidator.HasValidMemento(subject));
+                    .x(() => action = () => ModelValidator.HasValidMemento(subject));
 
                 "Then the action should throw"
-                    .f(() => action.ShouldThrow<Exception>());
+                    .x(() => action.Should().Throw<Exception>());
             }
 
             public class Subject : AggregateRoot

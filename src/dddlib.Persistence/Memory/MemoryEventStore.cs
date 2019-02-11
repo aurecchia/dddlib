@@ -14,17 +14,15 @@ namespace dddlib.Projections.Memory
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
+    using System.IO;
     using System.IO.MemoryMappedFiles;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Security.AccessControl;
-    using System.Security.Principal;
     using System.Text;
     using System.Threading;
-    using System.Web.Script.Serialization;
+    using dddlib.Sdk;
 #if PERSISTENCE
     using dddlib.Persistence.Sdk;
-    using dddlib.Sdk;
 #elif DISPATCHER
     using dddlib.Persistence.EventDispatcher.Sdk;
 #elif PROJECTIONS
@@ -35,7 +33,7 @@ namespace dddlib.Projections.Memory
     /// </summary>
     public sealed class MemoryEventStore : IEventStore, IDisposable
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         private readonly Dictionary<Guid, List<Event>> eventStreams = new Dictionary<Guid, List<Event>>();
         private readonly List<Event> store = new List<Event>();
@@ -43,6 +41,7 @@ namespace dddlib.Projections.Memory
         private readonly Mutex mutex;
         private readonly EventWaitHandle waitHandle;
         private readonly MemoryMappedFile file;
+        private readonly FileStream fileStream;
 
         private long readOffset;
         private long writeOffset;
@@ -50,7 +49,7 @@ namespace dddlib.Projections.Memory
 
         static MemoryEventStore()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new [] { new DateTimeConverter() });
         }
 
         /// <summary>
@@ -58,26 +57,23 @@ namespace dddlib.Projections.Memory
         /// </summary>
         public MemoryEventStore()
         {
-            var waitHandleSecuritySettings = new EventWaitHandleSecurity();
-            waitHandleSecuritySettings.AddAccessRule(
-                new EventWaitHandleAccessRule(
-                new SecurityIdentifier(WellKnownSidType.WorldSid, null),
-                EventWaitHandleRights.FullControl,
-                AccessControlType.Allow));
+            this.waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            this.mutex = new Mutex(false, @"Global\MemoryEventStore2Mutex");
 
-            var waitHandleCreated = false;
-            this.waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, "MemoryNotificationService2", out waitHandleCreated, waitHandleSecuritySettings);
-
-            var mutexSecuritySettings = new MutexSecurity();
-            mutexSecuritySettings.AddAccessRule(
-                new MutexAccessRule(
-                new SecurityIdentifier(WellKnownSidType.WorldSid, null),
-                MutexRights.FullControl,
-                AccessControlType.Allow));
-
-            var mutexCreated = false;
-            this.mutex = new Mutex(false, @"Global\MemoryEventStore2Mutex", out mutexCreated, mutexSecuritySettings);
-            this.file = MemoryMappedFile.CreateOrOpen("MemoryEventStore2", 10 * 1024 * 1024 /* 10MB */);
+            // NOTE (Alessio): This filename is also used by `dddlib.Persistence.EventDispatcher.Memory.MemoryNotificationService`
+            var tempFileName = Path.Combine(Path.GetTempPath(), "MemoryEventStore2");
+            const int bufferSize = 10 * 1024 * 1024;
+            this.fileStream = new FileStream(tempFileName,
+                                             FileMode.OpenOrCreate,
+                                             FileAccess.ReadWrite,
+                                             FileShare.ReadWrite,
+                                             bufferSize);
+            this.file = MemoryMappedFile.CreateFromFile(fileStream,
+                                                        null,
+                                                        bufferSize,
+                                                        MemoryMappedFileAccess.ReadWrite,
+                                                        HandleInheritability.None,
+                                                        true);
         }
 #if PERSISTENCE
     /// <summary>
@@ -239,6 +235,14 @@ namespace dddlib.Projections.Memory
             this.waitHandle.Dispose();
             this.mutex.Dispose();
             this.file.Dispose();
+
+            // '.Name' actually gets the absolute path, as per the documentation
+            var tempFileToRemove = this.fileStream.Name;
+            this.fileStream.Dispose();
+            if (File.Exists(tempFileToRemove))
+            {
+                File.Delete(tempFileToRemove);
+            }
 
             this.isDisposed = true;
         }

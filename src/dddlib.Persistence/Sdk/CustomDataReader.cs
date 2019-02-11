@@ -7,13 +7,12 @@ namespace dddlib.Persistence.Sdk
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Web.Script.Serialization;
     using dddlib.Sdk;
 
     internal sealed class CustomDataReader : IDataReader, IDisposable, IDataRecord
     {
         // NOTE (Cameron): This is nonsense and should be moved out of here.
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
         private static readonly Dictionary<string, int> OrdinalLookup = new Dictionary<string, int>
         {
             { "Index", 0 },
@@ -30,7 +29,7 @@ namespace dddlib.Persistence.Sdk
 
         static CustomDataReader()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         public CustomDataReader(IEnumerable<object> events, object metadata)

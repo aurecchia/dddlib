@@ -5,7 +5,6 @@
 namespace dddlib.Persistence.Sdk
 {
     using System;
-    using System.Web.Script.Serialization;
     using dddlib.Runtime;
     using dddlib.Sdk;
 
@@ -14,11 +13,11 @@ namespace dddlib.Persistence.Sdk
     /// </summary>
     public class DefaultNaturalKeySerializer : INaturalKeySerializer
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         static DefaultNaturalKeySerializer()
         {
-            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
+//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

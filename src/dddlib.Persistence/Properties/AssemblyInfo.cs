@@ -5,7 +5,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle("dddlib.Persistence")]
+//[assembly: AssemblyTitle("dddlib.Persistence")]
 [assembly: AssemblyDescription("")]
 
 [assembly: CLSCompliant(true)]

@@ -60,7 +60,7 @@ namespace dddlib.Tests.Unit
             Action action = () => application.Dispose();
 
             // assert
-            action.ShouldNotThrow();
+            action.Should().NotThrow();
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace dddlib.Tests.Unit
                 Action action = () => Application.Current.GetAggregateRootType(typeof(Aggregate));
 
                 // assert
-                action.ShouldThrow<RuntimeException>().And.InnerException.Should().Be(innerException);
+                action.Should().Throw<RuntimeException>().And.InnerException.Should().Be(innerException);
             }
             */
         }
@@ -167,7 +167,7 @@ namespace dddlib.Tests.Unit
                 Action action = () => Application.Current.GetAggregateRootType(typeof(Aggregate));
 
                 // assert
-                action.ShouldThrow<RuntimeException>().And.Should().Be(runtimeException);
+                action.Should().Throw<RuntimeException>().And.Should().Be(runtimeException);
             }
             */
         }

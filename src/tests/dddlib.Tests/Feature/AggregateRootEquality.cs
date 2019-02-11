@@ -24,17 +24,17 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2)
             {
                 "Given an aggregate root with an undefined natural key selector"
-                    .f(() => { });
+                    .x(() => { });
 
                 "When two instances of that aggregate root are instantiated"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject();
                         instance2 = new Subject();
                     });
 
                 "Then the first instance is not equal to the second instance"
-                    .f(() => instance1.Should().NotBe(instance2));
+                    .x(() => instance1.Should().NotBe(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -48,20 +48,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given an aggregate root with a natural key selector defined in metadata"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that aggregate root are instantiated with that natural key value assigned"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { NaturalKey = naturalKey };
                         instance2 = new Subject { NaturalKey = naturalKey };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -77,20 +77,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given an aggregate root with a natural key selector defined in the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that aggregate root are instantiated with that natural key value assigned"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { NaturalKey = naturalKey };
                         instance2 = new Subject { NaturalKey = naturalKey };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -113,20 +113,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given an aggregate root with non-conflicting natural key selectors defined in both metadata and the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that aggregate root are instantiated with that natural key value assigned"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { NaturalKey = naturalKey };
                         instance2 = new Subject { NaturalKey = naturalKey };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -150,13 +150,13 @@ namespace dddlib.Tests.Feature
             public void Scenario(Type type, Action action)
             {
                 "Given an aggregate root with conflicting natural key selectors defined in both metadata and the bootstrapper"
-                    .f(() => { });
+                    .x(() => { });
 
                 "When an instance of that aggregate root is instantiated"
-                    .f(() => action = () => new Subject());
+                    .x(() => action = () => new Subject());
 
                 "Then a runtime exception should be thrown" // and the runtime exception should state that the natural key is defined twice
-                    .f(() => action.ShouldThrow<RuntimeException>());
+                    .x(() => action.Should().Throw<RuntimeException>());
             }
 
             public class Subject : AggregateRoot
@@ -182,20 +182,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given a value object with an undefined equality comparer"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that value object that are instantiated with different values"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { NaturalKey = naturalKey.ToUpperInvariant() };
                         instance2 = new Subject { NaturalKey = naturalKey.ToLowerInvariant() };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().NotBe(instance2));
+                    .x(() => instance1.Should().NotBe(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -213,20 +213,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given a value object with an undefined equality comparer"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that value object that are instantiated with different values"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new Subject { NaturalKey = new Key { Value = naturalKey.ToUpperInvariant() } };
                         instance2 = new Subject { NaturalKey = new Key { Value = naturalKey.ToLowerInvariant() } };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Key : ValueObject<Key>
@@ -268,17 +268,17 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string component1, string component2)
             {
                 "Given a value object with an undefined equality comparer"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() =>
+                    .x(() =>
                     {
                         component1 = "key1";
                         component2 = "key2";
                     });
 
                 "When two instances of that value object that are instantiated with different values"
-                    .f(() =>
+                    .x(() =>
                     {
                         var naturalKey1 = new NaturalKeyValue { Component1 = component1, Component2 = component2 };
                         var naturalKey2 = new NaturalKeyValue { Component1 = component1, Component2 = component2 };
@@ -288,7 +288,7 @@ namespace dddlib.Tests.Feature
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class NaturalKeyValue : ValueObject<NaturalKeyValue>
@@ -311,17 +311,17 @@ namespace dddlib.Tests.Feature
             public void Scenario(SuperSubject instance1, SuperSubject instance2)
             {
                 "Given an aggregate root with an undefined natural key selector"
-                    .f(() => { });
+                    .x(() => { });
 
                 "When two instances of that aggregate root are instantiated"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new SuperSubject();
                         instance2 = new SuperSubject();
                     });
 
                 "Then the first instance is not equal to the second instance"
-                    .f(() => instance1.Should().NotBe(instance2));
+                    .x(() => instance1.Should().NotBe(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -339,20 +339,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given an aggregate root with a natural key selector defined in the base class"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that aggregate root are instantiated with that natural key value assigned"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new SuperSubject { NaturalKey = naturalKey };
                         instance2 = new SuperSubject { NaturalKey = naturalKey };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -372,20 +372,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given an aggregate root with a natural key selector defined in the subclass"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that aggregate root are instantiated with that natural key value assigned"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new SuperSubject { NaturalKey = naturalKey };
                         instance2 = new SuperSubject { NaturalKey = naturalKey };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -405,20 +405,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Subject instance1, Subject instance2, string naturalKey)
             {
                 "Given an aggregate root with a natural key selector defined in the base class and the subclass"
-                    .f(() => { });
+                    .x(() => { });
 
                 "And a natural key value"
-                    .f(() => naturalKey = "key");
+                    .x(() => naturalKey = "key");
 
                 "When two instances of that aggregate root are instantiated with the subclass natural key value assigned"
-                    .f(() =>
+                    .x(() =>
                     {
                         instance1 = new SuperSubject { NaturalKey = "unequalValue", NaturalKey2 = naturalKey };
                         instance2 = new SuperSubject { NaturalKey = "unequalValue2", NaturalKey2 = naturalKey };
                     });
 
                 "Then the first instance is equal to the second instance"
-                    .f(() => instance1.Should().Be(instance2));
+                    .x(() => instance1.Should().Be(instance2));
             }
 
             public class Subject : AggregateRoot
@@ -440,20 +440,20 @@ namespace dddlib.Tests.Feature
             public void Scenario(Registration registration, Car car, Car otherCar, IRegistrationService registrationService)
             {
                 "Given a registration service"
-                    .f(() => registrationService = new RegistrationService());
+                    .x(() => registrationService = new RegistrationService());
 
                 "And a registration"
-                    .f(() => registration = new Registration("abc", registrationService));
+                    .x(() => registration = new Registration("abc", registrationService));
 
                 "When two cars are instantiated with that registration"
-                    .f(() =>
+                    .x(() =>
                     {
                         car = new Car(registration);
                         otherCar = new Car(registration);
                     });
 
                 "Then the cars are equal"
-                    .f(() => car.Should().Be(otherCar));
+                    .x(() => car.Should().Be(otherCar));
             }
 
             public class Car : Vehicle
@@ -479,23 +479,23 @@ namespace dddlib.Tests.Feature
             public void Scenario(Registration registration, Registration otherRegistration, Car car, Car otherCar, IRegistrationService registrationService)
             {
                 "Given a registration service"
-                    .f(() => registrationService = new RegistrationService());
+                    .x(() => registrationService = new RegistrationService());
 
                 "And a registration"
-                    .f(() => registration = new Registration("abc", registrationService));
+                    .x(() => registration = new Registration("abc", registrationService));
 
                 "And a registration with a number that differs by case"
-                    .f(() => otherRegistration = new Registration("ABC", registrationService));
+                    .x(() => otherRegistration = new Registration("ABC", registrationService));
 
                 "When two cars are instantiated with those registrations"
-                    .f(() =>
+                    .x(() =>
                     {
                         car = new Car(registration);
                         otherCar = new Car(otherRegistration);
                     });
 
                 "Then the cars are equal"
-                    .f(() => car.Should().NotBe(otherCar));
+                    .x(() => car.Should().NotBe(otherCar));
             }
 
             public class Car : Vehicle
@@ -525,23 +525,23 @@ namespace dddlib.Tests.Feature
             public void Scenario(Registration registration, Registration otherRegistration, Car car, Car otherCar, IRegistrationService registrationService)
             {
                 "Given a registration service"
-                    .f(() => registrationService = new RegistrationService());
+                    .x(() => registrationService = new RegistrationService());
 
                 "And a registration"
-                    .f(() => registration = new Registration("abc", registrationService));
+                    .x(() => registration = new Registration("abc", registrationService));
 
                 "And a registration with a number that differs by case"
-                    .f(() => otherRegistration = new Registration("ABC", registrationService));
+                    .x(() => otherRegistration = new Registration("ABC", registrationService));
 
                 "When two cars are instantiated with those registrations"
-                    .f(() =>
+                    .x(() =>
                     {
                         car = new Car(registration);
                         otherCar = new Car(otherRegistration);
                     });
 
                 "Then the cars are equal"
-                    .f(() => car.Should().NotBe(otherCar));
+                    .x(() => car.Should().NotBe(otherCar));
             }
 
             public class Car : Vehicle

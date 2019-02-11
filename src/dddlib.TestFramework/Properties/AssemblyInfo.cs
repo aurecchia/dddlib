@@ -5,7 +5,7 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle("dddlib.TestFramework")]
+//[assembly: AssemblyTitle("dddlib.TestFramework")]
 [assembly: AssemblyDescription("")]
 
 [assembly: CLSCompliant(true)]

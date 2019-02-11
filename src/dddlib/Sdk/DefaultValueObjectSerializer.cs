@@ -2,6 +2,9 @@
 //  Copyright (c) dddlib contributors. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
+using dddlib.Sdk;
+
 namespace dddlib.Sdk
 {
     using System;
@@ -9,7 +12,6 @@ namespace dddlib.Sdk
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
-    using System.Web.Script.Serialization;
     using dddlib.Runtime;
 
     /// <summary>
@@ -19,11 +21,12 @@ namespace dddlib.Sdk
     public class DefaultValueObjectSerializer<T> : IValueObjectSerializer
         where T : ValueObject<T>
     {
-        private static readonly JavaScriptSerializer Serializer = new JavaScriptSerializer();
+        private static readonly IJsonSerializer Serializer = new JavaScriptSerializer();
 
         static DefaultValueObjectSerializer()
         {
-            Serializer.RegisterConverters(new JavaScriptConverter[] { new DateTimeConverter(), new ValueObjectConverter() });
+//            Serializer.RegisterConverters(new IJsonConverter[] { new DateTimeConverter(), new ValueObjectConverter() });
+            Serializer.RegisterConverters(new IJsonConverter[] { new ValueObjectConverter() });
         }
 
         /// <summary>
@@ -46,15 +49,15 @@ namespace dddlib.Sdk
             return Serializer.Deserialize<T>(serializedValueObject);
         }
 
-        private class ValueObjectConverter : JavaScriptConverter
+        private class ValueObjectConverter : IJsonConverter
         {
-            public override IEnumerable<Type> SupportedTypes
+            public IEnumerable<Type> SupportedTypes
             {
                 get { return new[] { typeof(T) }; }
             }
 
             [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:ParameterMustNotSpanMultipleLines", Justification = "It's fine here.")]
-            public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
+            public object Deserialize(IDictionary<string, object> dictionary, Type type, IJsonSerializer serializer)
             {
                 Guard.Against.Null(() => dictionary);
 
@@ -105,7 +108,7 @@ To fix this issue, either:
                 return valueObject;
             }
 
-            public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
+            public IDictionary<string, object> Serialize(object obj, IJsonSerializer serializer)
             {
                 return obj.GetType()
                     .GetProperties()
