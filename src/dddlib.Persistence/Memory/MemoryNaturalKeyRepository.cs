@@ -14,8 +14,8 @@ namespace dddlib.Persistence.Memory
     using System.Runtime.Serialization;
     using System.Text;
     using System.Threading;
-    using dddlib.Sdk;
     using dddlib.Persistence.Sdk;
+    using dddlib.Sdk;
 
     /// <summary>
     /// Represents the memory natural key repository.
@@ -38,7 +38,6 @@ namespace dddlib.Persistence.Memory
 
         static MemoryNaturalKeyRepository()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

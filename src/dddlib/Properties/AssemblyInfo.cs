@@ -6,7 +6,6 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-//[assembly: AssemblyTitle("dddlib")]
 [assembly: AssemblyDescription("")]
 
 [assembly: CLSCompliant(true)]

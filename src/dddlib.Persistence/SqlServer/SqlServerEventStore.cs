@@ -39,7 +39,6 @@ namespace dddlib.Persistence.SqlServer
 
         static SqlServerEventStore()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>
@@ -242,7 +241,6 @@ Further information: https://github.com/dddlib/dddlib/wiki/Serialization",
 
             static SqlEvents()
             {
-//                Serializer.RegisterConverters(new[] { new DateTimeConverter() });
             }
 
             public SqlEvents(ITypeCache typeCache, IEnumerable<object> events)

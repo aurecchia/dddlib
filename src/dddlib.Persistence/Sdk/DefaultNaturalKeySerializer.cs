@@ -17,7 +17,6 @@ namespace dddlib.Persistence.Sdk
 
         static DefaultNaturalKeySerializer()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

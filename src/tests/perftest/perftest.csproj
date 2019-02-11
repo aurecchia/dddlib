@@ -4,9 +4,12 @@
         <TargetFramework>netcoreapp2.1</TargetFramework>
 
         <IsPackable>false</IsPackable>
+        <!-- NOTE (Alessio): see https://andrewlock.net/fixing-the-error-program-has-more-than-one-entry-point-defined-for-console-apps-containing-xunit-tests/ -->
+        <GenerateProgramFile>false</GenerateProgramFile>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="dddlib.Persistence.NEventStore" Version="0.3.1-alpha23" />
         <PackageReference Include="HdrHistogram" Version="1.0.120-prerelease" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
         <PackageReference Include="NEventStore" Version="5.2.0" />
@@ -21,4 +24,11 @@
       <ProjectReference Include="..\dddlib.Tests.Sdk\dddlib.Tests.Sdk.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Reference Include="dddlib.Persistence.NEventStore, Version=0.3.1.0, Culture=neutral">
+            <SpecificVersion>False</SpecificVersion>
+            <HintPath>..\..\..\packages\dddlib.Persistence.NEventStore.0.3.1-alpha23\lib\net45\dddlib.Persistence.NEventStore.dll</HintPath>
+            <Private>True</Private>
+        </Reference>
+    </ItemGroup>
 </Project>

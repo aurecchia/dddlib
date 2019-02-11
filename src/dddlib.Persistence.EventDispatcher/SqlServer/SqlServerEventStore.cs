@@ -13,7 +13,6 @@ namespace dddlib.Persistence.EventDispatcher.SqlServer
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Transactions;
-    using dddlib.Sdk;
     using dddlib.Persistence.EventDispatcher.Sdk;
     using dddlib.Sdk;
 
@@ -30,7 +29,6 @@ namespace dddlib.Persistence.EventDispatcher.SqlServer
 
         static SqlServerEventStore()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

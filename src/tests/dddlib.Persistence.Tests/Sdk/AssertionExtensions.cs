@@ -5,7 +5,6 @@
 namespace dddlib.Tests.Sdk
 {
     using dddlib.Sdk;
-    using dddlib.Sdk;
 
     public static class AssertionExtensions
     {

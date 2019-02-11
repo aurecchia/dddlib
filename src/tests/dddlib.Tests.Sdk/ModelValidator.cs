@@ -8,7 +8,6 @@ namespace dddlib.Tests.Sdk
     using System;
     using System.Linq;
     using dddlib.Sdk;
-    using dddlib.Sdk;
     using dddlib.TestFramework;
 
     public static class ModelValidator

@@ -5,6 +5,8 @@ namespace dddlib.Sdk
     using System.Collections.Generic;
     using Newtonsoft.Json;
 
+    // NOTE (Alessio): see https://thedevstop.wordpress.com/2012/04/09/from-javascriptserializer-to-jsonnet/
+    // TODO (Alessio): Thi has to potentially be removed/simplified
     public class JavaScriptConverter : JsonConverter
     {
         private readonly IJsonConverter converter = null;

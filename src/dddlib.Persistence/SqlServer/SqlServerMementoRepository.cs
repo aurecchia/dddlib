@@ -34,7 +34,6 @@ namespace dddlib.Persistence.SqlServer
 
         static SqlServerMementoRepository()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

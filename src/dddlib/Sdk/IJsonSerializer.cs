@@ -4,6 +4,8 @@ namespace dddlib.Sdk
     using System;
     using System.Collections.Generic;
 
+    // NOTE (Alessio): see https://thedevstop.wordpress.com/2012/04/09/from-javascriptserializer-to-jsonnet/
+    // TODO (Alessio): Thi has to potentially be removed/simplified
     public interface IJsonSerializer
     {
         void RegisterConverters(IEnumerable<IJsonConverter> converters);

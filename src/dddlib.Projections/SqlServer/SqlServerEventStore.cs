@@ -15,7 +15,6 @@ namespace dddlib.Projections.SqlServer
     using System.Runtime.Serialization;
     using System.Transactions;
     using dddlib.Sdk;
-    using dddlib.Sdk;
     using Sdk;
 
     /// <summary>
@@ -32,7 +31,6 @@ namespace dddlib.Projections.SqlServer
 
         static SqlServerEventStore()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

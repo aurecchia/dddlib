@@ -64,7 +64,7 @@ namespace dddlib.Projections.Memory
             var tempFileName = Path.Combine(Path.GetTempPath(), "MemoryEventStore2");
             const int bufferSize = 10 * 1024 * 1024;
             this.fileStream = new FileStream(tempFileName,
-                                             FileMode.OpenOrCreate,
+                                             FileMode.Create,
                                              FileAccess.ReadWrite,
                                              FileShare.ReadWrite,
                                              bufferSize);

@@ -5,7 +5,6 @@
 using System;
 using System.Reflection;
 
-//[assembly: AssemblyTitle("dddlib.Persistence.EventDispatcher")]
 [assembly: AssemblyDescription("")]
 
 [assembly: CLSCompliant(true)]

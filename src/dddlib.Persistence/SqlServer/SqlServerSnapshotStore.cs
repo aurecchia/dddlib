@@ -29,7 +29,6 @@ namespace dddlib.Persistence.SqlServer
 
         static SqlServerSnapshotStore()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         /// <summary>

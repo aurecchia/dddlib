@@ -29,7 +29,6 @@ namespace dddlib.Persistence.Sdk
 
         static CustomDataReader()
         {
-//            Serializer.RegisterConverters(new[] { new DateTimeConverter() });
         }
 
         public CustomDataReader(IEnumerable<object> events, object metadata)

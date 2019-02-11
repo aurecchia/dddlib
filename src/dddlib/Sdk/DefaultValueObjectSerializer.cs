@@ -2,9 +2,6 @@
 //  Copyright (c) dddlib contributors. All rights reserved.
 // </copyright>
 
-using Newtonsoft.Json;
-using dddlib.Sdk;
-
 namespace dddlib.Sdk
 {
     using System;
@@ -25,7 +22,6 @@ namespace dddlib.Sdk
 
         static DefaultValueObjectSerializer()
         {
-//            Serializer.RegisterConverters(new IJsonConverter[] { new DateTimeConverter(), new ValueObjectConverter() });
             Serializer.RegisterConverters(new IJsonConverter[] { new ValueObjectConverter() });
         }
 

@@ -2,12 +2,10 @@
 //  Copyright (c) dddlib contributors. All rights reserved.
 // </copyright>
 
-using System.CodeDom;
-using System.IO;
-
 namespace dddlib.Persistence.EventDispatcher.Memory
 {
     using System;
+    using System.IO;
     using System.IO.MemoryMappedFiles;
     using System.Text;
     using System.Threading;
