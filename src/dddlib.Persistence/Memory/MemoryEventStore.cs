@@ -61,7 +61,8 @@ namespace dddlib.Projections.Memory
             this.mutex = new Mutex(false, @"Global\MemoryEventStore2Mutex");
 
             // NOTE (Alessio): This filename is also used by `dddlib.Persistence.EventDispatcher.Memory.MemoryNotificationService`
-            var tempFileName = Path.Combine(Path.GetTempPath(), "MemoryEventStore2");
+//            var tempFileName = Path.Combine(Path.GetTempPath(), "MemoryEventStore2");
+            var tempFileName = Path.GetTempFileName();
             const int bufferSize = 10 * 1024 * 1024;
             this.fileStream = new FileStream(tempFileName,
                                              FileMode.Create,
@@ -125,7 +126,7 @@ namespace dddlib.Projections.Memory
 
             using (new ExclusiveCodeBlock(this.mutex))
             {
-                this.Synchronize();
+//                this.Synchronize();
 
                 postCommitState = null;
 
@@ -217,7 +218,7 @@ namespace dddlib.Projections.Memory
                 throw new ObjectDisposedException(this.GetType().FullName);
             }
 
-            this.Synchronize();
+//            this.Synchronize();
 
             return this.store.Skip((int)sequenceNumber).Select(@event => @event.Payload);
         }
